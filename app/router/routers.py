@@ -8,6 +8,7 @@ from app.controllers.controllers import (
     get_messages_by_room,
     delete_message,
     get_user,
+    read_user_by_id,
     update_message,
     create_chat_room,
     add_user_to_room,
@@ -44,9 +45,16 @@ def create_users(user: UserCreate, db: Session = Depends(get_db)):
 def read_users(email: str, db: Session = Depends(get_db)):
     return read_user(db, email)
 
+
 @router.get("/user/{email}")
 def get_current_user(email: str, db: Session = Depends(get_db)):
     return get_user(db, email)
+
+
+@router.get("/user/{id}")
+def read_user_by_id(id: str , db: Session = Depends(get_db)):
+    return read_user_by_id(db, id)
+
 
 @router.post("/chat-room", response_model=ChatRoomResponse)
 def create_chat_rooms(room: ChatRoomCreate, db: Session = Depends(get_db)):

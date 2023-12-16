@@ -27,18 +27,18 @@ def create_user(db, user):
     except IntegrityError as e:
         db.rollback()
         raise HTTPException(
-            status_code=400, detail="User with this email already exists"
+            status_code=400, detail="User with this email or userName already exists"
         ) from e
-    
+
+
 def read_user(db: Session, email: str):
     db_user = db.query(User).filter(User.email == email).first()
     if db_user:
         return db_user
     else:
-        raise HTTPException(
-            status_code=404, detail="User not found"
-        )
-    
+        raise HTTPException(status_code=404, detail="User not found")
+
+
 def get_user(db: Session, user_email: str):
     query = db.query(User).filter(User.email == user_email).first()
     if query:
@@ -47,12 +47,23 @@ def get_user(db: Session, user_email: str):
             "email": query.email,
             "userName": query.username,
             "rooms": query.rooms,
-            "sentMessages": query.sent_messages
+            "sentMessages": query.sent_messages,
         }
     else:
-        raise HTTPException(
-            status_code=404, detail="User not found"
-        )
+        raise HTTPException(status_code=404, detail="User not found")
+
+
+def read_user_by_id(db: Session, user_id: str):
+    query = db.query(User).filter(User.id == user_id)
+    if query:
+        return {
+            "uuid": query.id,
+            "email": query.email,
+            "userName": query.username,
+            "rooms": query.rooms,
+        }
+    else:
+        raise HTTPException(status_code=404, detail="User not found")
 
 
 def create_chat_room(db: Session, room: ChatRoomCreate):
@@ -91,7 +102,6 @@ def get_chat_room_by_id(db: Session, chat_room_id: int):
     return db.query(ChatRoom).filter(ChatRoom.id == chat_room_id).first()
 
 
-
 def get_chat_rooms(db: Session, user_id: int):
     user_chat_rooms = (
         db.query(UserChatRoom.room_id).filter(UserChatRoom.user_id == user_id).all()
@@ -123,6 +133,7 @@ def get_chat_rooms(db: Session, user_id: int):
 
     print(chat_rooms_response)
     return chat_rooms_response
+
 
 def get_user_rooms(db: Session, user_id: int):
     user_chat_rooms = (
