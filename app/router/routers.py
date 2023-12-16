@@ -72,13 +72,13 @@ def get_chat_room(user_id: str, db: Session = Depends(get_db)):
 
 @router.get("/messages/{room_id}", response_model=List[MessageResponse])
 def read_messages(
-    room_id: str, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)
+    room_id: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
     return get_messages_by_room(db, room_id, skip=skip, limit=limit)
 
 
 @router.get("/messages/", response_model=list[MessageResponse])
-def read_messages(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+def read_messages(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return get_messages(db, skip=skip, limit=limit)
 
 

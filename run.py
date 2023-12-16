@@ -10,7 +10,7 @@ load_dotenv()
 # subprocess.run("pip freeze > requirements.txt", shell=True)
 # print("Requirements file generated.")
 
-PORT = int(os.getenv("PORT", default=10010))
+PORT = int(os.getenv("PORT", default=10020))
 
 if __name__ == "__main__":
     import uvicorn
