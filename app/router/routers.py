@@ -52,7 +52,7 @@ def get_current_user(email: str, db: Session = Depends(get_db)):
 
 
 @router.get("/user/{id}")
-def read_user_by_id(id: str , db: Session = Depends(get_db)):
+def get_user_by_id(id: str , db: Session = Depends(get_db)):
     return read_user_by_id(db, id)
 
 
