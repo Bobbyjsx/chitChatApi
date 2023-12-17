@@ -85,7 +85,7 @@ def read_messages(
     return get_messages_by_room(db, room_id, skip=skip, limit=limit)
 
 
-@router.get("/messages/", response_model=list[MessageResponse])
+@router.get("/messages", response_model=list[MessageResponse])
 def read_messages(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return get_messages(db, skip=skip, limit=limit)
 

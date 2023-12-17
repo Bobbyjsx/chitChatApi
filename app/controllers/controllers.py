@@ -230,19 +230,30 @@ def get_messages(db: Session, skip: int = 0, limit: int = 10):
         .all()
     )
 
-    # Convert the query results to a list of dictionaries
+    sender_ids = [message.sender_id for message in messages]
+
+    # Fetch usernames corresponding to sender_ids
+    usernames = (
+        db.query(User.id, User.username)
+        .filter(User.id.in_(sender_ids))
+        .all()
+    )
+    
+    # Create a mapping of sender_id to username
+    username_mapping = {user.id: user.username for user in usernames}
+
+    # Convert the query results to a list of dictionaries with appended usernames
     messages_list = [
         {
             "id": message.id,
             "sender_id": message.sender_id,
+            "username": username_mapping.get(message.sender_id), 
             "content": message.content,
             "time": message.time,
             "room_id": message.room_id,
         }
         for message in messages
     ]
-    print(messages_list)
-
     return messages_list
 
 

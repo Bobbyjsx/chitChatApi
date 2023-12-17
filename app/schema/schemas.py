@@ -58,6 +58,7 @@ class MessageResponse(BaseModel):
     content: str
     time: str
     room_id: str
+    username: str
 
 
 class DeleteMessageResponse(BaseModel):
