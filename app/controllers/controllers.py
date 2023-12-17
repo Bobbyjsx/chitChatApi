@@ -90,7 +90,7 @@ def create_chat_room(db: Session, room: ChatRoomCreate):
     return ChatRoomResponse(id=db_room.id, name=db_room.name, members=members)
 
 
-def add_user_to_room(db: Session, user_id: int, room_id: str):
+def add_user_to_room(db: Session, user_id: str, room_id: str):
     db_user_room = UserChatRoom(user_id=user_id, room_id=room_id)
     db.add(db_user_room)
     db.commit()
@@ -98,11 +98,11 @@ def add_user_to_room(db: Session, user_id: int, room_id: str):
     return db_user_room
 
 
-def get_chat_room_by_id(db: Session, chat_room_id: int):
+def get_chat_room_by_id(db: Session, chat_room_id: str):
     return db.query(ChatRoom).filter(ChatRoom.id == chat_room_id).first()
 
 
-def get_chat_rooms(db: Session, user_id: int):
+def get_chat_rooms(db: Session, user_id: str):
     user_chat_rooms = (
         db.query(UserChatRoom.room_id).filter(UserChatRoom.user_id == user_id).all()
     )
@@ -135,7 +135,7 @@ def get_chat_rooms(db: Session, user_id: int):
     return chat_rooms_response
 
 
-def get_user_rooms(db: Session, user_id: int):
+def get_user_rooms(db: Session, user_id: str):
     user_chat_rooms = (
         db.query(UserChatRoom.room_id).filter(UserChatRoom.user_id == user_id).all()
     )

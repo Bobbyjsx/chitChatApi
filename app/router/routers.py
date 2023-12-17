@@ -62,7 +62,7 @@ def create_chat_rooms(room: ChatRoomCreate, db: Session = Depends(get_db)):
 
 
 @router.post("/users/{user_id}/rooms/{room_id}", response_model=UserChatRoomResponse)
-def add_user_to_rooms(user_id: int, room_id: str, db: Session = Depends(get_db)):
+def add_user_to_rooms(user_id: str, room_id: str, db: Session = Depends(get_db)):
     return add_user_to_room(db, user_id, room_id)
 
 

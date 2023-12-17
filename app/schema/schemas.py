@@ -9,7 +9,7 @@ class UserCreate(BaseModel):
 
 
 class UserResponse(BaseModel):
-    id: int
+    id: str
     username: str
     email: str
 
@@ -19,7 +19,7 @@ class SignIn(BaseModel):
 
 
 class SignInResponse(BaseModel):
-    id: int
+    id: str
     username: str
     email: str
     password: str
@@ -27,7 +27,7 @@ class SignInResponse(BaseModel):
 
 class ChatRoomCreate(BaseModel):
     name: str
-    members: List[int]  # List of user IDs
+    members: List[str]  # List of user IDs
 
 
 class ChatRoomResponse(BaseModel):
@@ -43,18 +43,18 @@ class AllChatRoomResponse(BaseModel):
 
 
 class UserChatRoomResponse(BaseModel):
-    user_id: int
+    user_id: str
     room_id: str
 
 
 class MessageCreate(BaseModel):
     content: str
-    sender_id: int
+    sender_id: str
 
 
 class MessageResponse(BaseModel):
     id: str
-    sender_id: int
+    sender_id: str
     content: str
     time: str
     room_id: str
@@ -62,7 +62,7 @@ class MessageResponse(BaseModel):
 
 class DeleteMessageResponse(BaseModel):
     id: str
-    sender_id: int
+    sender_id: str
     content: str
     time: str
     room_id: str
@@ -75,7 +75,7 @@ class UpdateMessage(BaseModel):
 
 class UpdateMessageResponse(BaseModel):
     id: str
-    sender_id: int
+    sender_id: str
     content: str
     time: str
     room_id: str
