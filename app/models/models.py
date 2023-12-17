@@ -10,8 +10,10 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
+    id = Column(
+        Integer, primary_key=True, index=True, default=lambda: str(uuid.uuid4())
+    )
+    username = Column(String, index=True)
     email = Column(String, unique=True, index=True)
     password = Column(String)
 
@@ -25,15 +27,16 @@ class User(Base):
         self.username = username
         self.email = email
         self.password = password
+
     def __repr__(self):
-        return f"id={self.id}, user_name={self.username}, email={self.email}"   
+        return f"id={self.id}, user_name={self.username}, email={self.email}"
 
 
 class ChatRoom(Base):
     __tablename__ = "chat_rooms"
 
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    name = Column(String, unique=True, index=True)
+    name = Column(String, index=True)
 
     # Define a relationship with the User model
     users = relationship("User", secondary="user_chat_room", overlaps="rooms")
@@ -60,7 +63,7 @@ class Message(Base):
 
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
 
-    sender_id = Column(Integer, ForeignKey("users.id"), index=True)
+    sender_id = Column(String, ForeignKey("users.id"), index=True)
     content = Column(String)
     time = Column(String)
     room_id = Column(
