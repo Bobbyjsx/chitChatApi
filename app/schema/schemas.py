@@ -52,13 +52,20 @@ class MessageCreate(BaseModel):
     sender_id: str
 
 
-class MessageResponse(BaseModel):
+class GetMessageResponse(BaseModel):
     id: str
     sender_id: str
     content: str
     time: str
     room_id: str
     username: str
+
+class MessageResponse(BaseModel):
+    id: str
+    sender_id: str
+    content: str
+    time: str
+    room_id: str
 
 
 class DeleteMessageResponse(BaseModel):

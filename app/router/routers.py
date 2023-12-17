@@ -17,6 +17,7 @@ from app.controllers.controllers import (
     read_user,
 )
 from app.schema.schemas import (
+    GetMessageResponse,
     MessageCreate,
     MessageResponse,
     UpdateMessage,
@@ -52,7 +53,7 @@ def get_current_user(email: str, db: Session = Depends(get_db)):
 
 
 @router.get("/user/{id}")
-def get_user_by_id(id: str , db: Session = Depends(get_db)):
+def get_user_by_id(id: str, db: Session = Depends(get_db)):
     return read_user_by_id(db, id)
 
 
@@ -78,14 +79,14 @@ def get_chat_room(user_id: str, db: Session = Depends(get_db)):
     return get_chat_rooms(db, user_id)
 
 
-@router.get("/messages/{room_id}", response_model=List[MessageResponse])
+@router.get("/messages/{room_id}", response_model=List[GetMessageResponse])
 def read_messages(
     room_id: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
     return get_messages_by_room(db, room_id, skip=skip, limit=limit)
 
 
-@router.get("/messages", response_model=list[MessageResponse])
+@router.get("/messages", response_model=list[GetMessageResponse])
 def read_messages(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return get_messages(db, skip=skip, limit=limit)
 
