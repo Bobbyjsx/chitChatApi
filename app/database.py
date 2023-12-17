@@ -1,5 +1,5 @@
 #  database.py
-from sqlalchemy import ForeignKey, create_engine, Column, Integer, String, DateTime
+from sqlalchemy import ForeignKey, create_engine, Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import Sequence
@@ -19,7 +19,7 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(
-        Integer, primary_key=True, index=True, default=lambda: str(uuid.uuid4())
+        String, primary_key=True, index=True, default=lambda: str(uuid.uuid4())
     )
     username = Column(String, index=True)
     email = Column(String, unique=True, index=True)

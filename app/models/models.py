@@ -1,6 +1,6 @@
 import datetime
 import uuid
-from sqlalchemy import Column, ForeignKey, String, Integer
+from sqlalchemy import Column, ForeignKey, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -11,7 +11,7 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(
-        Integer, primary_key=True, index=True, default=lambda: str(uuid.uuid4())
+        String, primary_key=True, index=True, default=lambda: str(uuid.uuid4())
     )
     username = Column(String, index=True)
     email = Column(String, unique=True, index=True)
@@ -54,7 +54,7 @@ class ChatRoom(Base):
 class UserChatRoom(Base):
     __tablename__ = "user_chat_room"
 
-    user_id = Column(Integer, ForeignKey("users.id"), primary_key=True)
+    user_id = Column(String, ForeignKey("users.id"), primary_key=True)
     room_id = Column(String, ForeignKey("chat_rooms.id"), primary_key=True)
 
 
