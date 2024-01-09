@@ -52,6 +52,7 @@ class MessageCreate(BaseModel):
     sender_id: str
 
 
+
 class GetMessageResponse(BaseModel):
     id: str
     sender_id: str

@@ -79,7 +79,7 @@ def get_chat_room(user_id: str, db: Session = Depends(get_db)):
     return get_chat_rooms(db, user_id)
 
 
-@router.get("/messages/{room_id}", response_model=List[GetMessageResponse])
+@router.get("/messages/{room_id}")
 def read_messages(
     room_id: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):

@@ -19,12 +19,15 @@ class User(Base):
     rooms = relationship("ChatRoom", secondary="user_chat_room", overlaps="rooms")
 
     # Define a relationship with the Message model
-    sent_messages = relationship("Message", back_populates="sender")
+    sent_messages = relationship(
+        "Message", back_populates="sender", foreign_keys="[Message.sender_id]"
+    )
 
     def __init__(self, username, email, password):
         self.username = username
         self.email = email
         self.password = password
+
 
     def __repr__(self):
         return f"id={self.id}, user_name={self.username}, email={self.email}"
@@ -63,7 +66,7 @@ class Message(Base):
 
     sender_id = Column(String, ForeignKey("users.id"), index=True)
     content = Column(String)
-    username = Column(String)
+    username = Column(String, ForeignKey("users.username"), index=True)
     time = Column(String)
     room_id = Column(
         String, ForeignKey("chat_rooms.id"), default=lambda: str(uuid.uuid4())
@@ -73,10 +76,15 @@ class Message(Base):
     room = relationship("ChatRoom", back_populates="messages")
 
     # Define a relationship with the User model
-    sender = relationship("User", back_populates="sent_messages")
+    sender = relationship(
+        "User", back_populates="sent_messages", foreign_keys="[Message.sender_id]"
+    )
 
-    def __init__(self, sender_id, content, time=None, custom_uuid=None, room_id=None):
+    def __init__(
+        self, sender_id, content, username, time=None, custom_uuid=None, room_id=None
+    ):
         self.sender_id = sender_id
+        self.username = username
         self.content = content
         self.time = time or datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
         self.uuid = custom_uuid or str(uuid.uuid4())

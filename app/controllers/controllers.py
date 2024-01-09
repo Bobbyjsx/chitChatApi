@@ -168,7 +168,7 @@ def get_user_rooms(db: Session, user_id: str):
     return chat_rooms_response
 
 
-def create_message(db: Session, message_data: MessageCreate, room_id: str):
+def create_message(db: Session, message_data: MessageCreate, room_id: str,):
     sender_id = message_data.sender_id
 
     # Check if the sender_id exists in the User table
@@ -179,7 +179,7 @@ def create_message(db: Session, message_data: MessageCreate, room_id: str):
         raise ValueError(f"User with ID {sender_id} does not exist.")
 
     # Create the Message instance
-    db_message = Message(**message_data.dict(), room_id=room_id)
+    db_message = Message(**message_data.dict(), username = sender.username ,room_id=room_id)
     db.add(db_message)
     db.commit()
     db.refresh(db_message)
@@ -189,11 +189,7 @@ def create_message(db: Session, message_data: MessageCreate, room_id: str):
 def get_messages_by_room(db: Session, room_id: str, skip: int = 0, limit: int = 10):
     messages = (
         db.query(
-            Message.id,
-            Message.sender_id,
-            Message.content,
-            Message.time,
-            Message.room_id,
+            Message
         )
         .filter(Message.room_id == room_id)
         .offset(skip)
@@ -206,6 +202,7 @@ def get_messages_by_room(db: Session, room_id: str, skip: int = 0, limit: int = 
         {
             "id": message.id,
             "sender_id": message.sender_id,
+            "username": message.username,
             "content": message.content,
             "time": message.time,
             "room_id": message.room_id,
@@ -233,12 +230,8 @@ def get_messages(db: Session, skip: int = 0, limit: int = 10):
     sender_ids = [message.sender_id for message in messages]
 
     # Fetch usernames corresponding to sender_ids
-    usernames = (
-        db.query(User.id, User.username)
-        .filter(User.id.in_(sender_ids))
-        .all()
-    )
-    
+    usernames = db.query(User.id, User.username).filter(User.id.in_(sender_ids)).all()
+
     # Create a mapping of sender_id to username
     username_mapping = {user.id: user.username for user in usernames}
 
@@ -247,7 +240,7 @@ def get_messages(db: Session, skip: int = 0, limit: int = 10):
         {
             "id": message.id,
             "sender_id": message.sender_id,
-            "username": username_mapping.get(message.sender_id), 
+            "username": username_mapping.get(message.sender_id),
             "content": message.content,
             "time": message.time,
             "room_id": message.room_id,
