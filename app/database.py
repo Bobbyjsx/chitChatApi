@@ -66,7 +66,8 @@ class Message(Base):
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
 
     sender_id = Column(String, ForeignKey("users.id"), index=True)
-    content = Column(String)
+    content = Column(String) 
+    username = Column(String)
     time = Column(String)
     room_id = Column(
         String, ForeignKey("chat_rooms.id"), default=lambda: str(uuid.uuid4())
